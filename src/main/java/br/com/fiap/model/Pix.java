@@ -1,10 +1,10 @@
 package br.com.fiap.model;
 
 public class Pix {
-    private Long contaOrigem;      // ID da conta de origem
-    private Long contaDestino; // ID da conta de destino
-    private double valor;             // Valor do PIX
-
+    private Long contaOrigem;     
+    private Long contaDestino; 
+    private double valor; 
+    
     public Pix(Long contaOrigem, Long contaDestino, double valor) {
         this.contaOrigem = contaOrigem;
         this.contaDestino = contaDestino;
