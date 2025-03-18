@@ -10,7 +10,7 @@ public class JsonOut {
         // Criando um nó JSON com um array
         ObjectNode jsonObject = mapper.createObjectNode();
         jsonObject.put("Nome do Projeto", "BankYou API");
-        jsonObject.set("Integrantes", mapper.valueToTree(List.of("Gulherme Alves Pedroso", "Rfael Souza Bezerra")));
+        jsonObject.set("Integrantes", mapper.valueToTree(List.of("Gulherme Alves Pedroso", "Rafael Souza Bezerra")));
 
         // Convertendo para JSON e imprimindo
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);

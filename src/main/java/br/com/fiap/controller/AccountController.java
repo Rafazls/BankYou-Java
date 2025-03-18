@@ -17,12 +17,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/account")
-public class CategoryController {
+public class AccountController {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryController.class);
+    private static final Logger log = LoggerFactory.getLogger(AccountController.class);
     private final List<Account> repository = new ArrayList<>();
 
     @GetMapping("/")
@@ -77,9 +76,9 @@ public class CategoryController {
 
     @PostMapping("/pix")
     public ResponseEntity<Account> transferPix(@RequestBody Pix pix) {
-        log.info("Realizando transferência PIX de {} da conta ID: {} para a conta ID: {}", 
+        log.info("Realizando transferência PIX de {} da conta ID: {} para a conta ID: {}",
                 pix.getValor(), pix.getContaOrigem(), pix.getContadestino());
-        log.info(""+pix);
+        log.info("" + pix);
 
         Account sourceAccount = findAccountById(pix.getContaOrigem());
         Account destinationAccount = findAccountById(pix.getContadestino());
@@ -91,14 +90,14 @@ public class CategoryController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo insuficiente na conta de origem");
         }
 
-        if(sourceAccount.isAtivo() == false || destinationAccount.isAtivo() == false){
+        if (sourceAccount.isAtivo() == false || destinationAccount.isAtivo() == false) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta de origem ou destino inativa");
         }
 
         sourceAccount.setSaldoInicial(sourceAccount.getSaldoInicial() - pix.getValor());
         destinationAccount.setSaldoInicial(destinationAccount.getSaldoInicial() + pix.getValor());
 
-        return ResponseEntity.status(HttpStatus.OK).body(sourceAccount);    
+        return ResponseEntity.status(HttpStatus.OK).body(sourceAccount);
     }
 
     @GetMapping("/cpf/{cpf}")
@@ -124,7 +123,6 @@ public class CategoryController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<Account> update(@PathVariable Long id) {
         log.info("Atualizando cliente com ID: {}", id);
@@ -132,7 +130,6 @@ public class CategoryController {
         accountToUpdate.setAtivo(false);
         return ResponseEntity.status(HttpStatus.OK).body(accountToUpdate);
     }
-
 
     private void validateAccount(Account account) {
         if (account.getName() == null || account.getName().isEmpty()) {
@@ -148,7 +145,8 @@ public class CategoryController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Saldo inicial não pode ser negativo");
         }
         if (!List.of("corrente", "poupanca", "salario").contains(account.getTipoConta().toString().toLowerCase())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo deve ser um tipo válido (corrente, poupança ou salário)");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Tipo deve ser um tipo válido (corrente, poupança ou salário)");
         }
     }
 }
